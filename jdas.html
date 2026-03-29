@@ -1,14 +1,17 @@
 async function loadLeads() {
     const leadsContainer = document.getElementById('leadsBody'); 
+    
     try {
+        // MUST BE A RELATIVE PATH
         const response = await fetch('/api/admin/leads', {
             method: 'GET',
-            credentials: 'include' // THIS IS THE FIX FOR THE BLANK PAGE
+            credentials: 'include' // This is the secret sauce for the cloud
         });
 
         if (response.ok) {
             const leads = await response.json();
             leadsContainer.innerHTML = ''; 
+
             leads.forEach(lead => {
                 const row = `
                     <tr>
@@ -17,14 +20,15 @@ async function loadLeads() {
                         <td>${lead.email}</td>
                         <td>${lead.service}</td>
                         <td>${lead.challenge}</td>
-                    </tr>`;
+                    </tr>
+                `;
                 leadsContainer.innerHTML += row;
             });
         } else if (response.status === 401) {
+            // If the server says "Unauthorized", go back to login
             window.location.href = '/admin';
         }
     } catch (error) {
         console.error("Dashboard error:", error);
     }
 }
-document.addEventListener('DOMContentLoaded', loadLeads);
