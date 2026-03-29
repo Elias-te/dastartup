@@ -1826,6 +1826,33 @@ window.addEventListener('scroll', () => {
     a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
   });
 });
+// --- PUT THIS IN index.html ---
+async function handleSubmit(e) {
+  e.preventDefault();
+  
+  const formData = {
+    name: e.target.elements[0].value,
+    company: e.target.elements[1].value,
+    email: e.target.elements[2].value,
+    service: e.target.elements[3].value,
+    challenge: e.target.elements[4].value
+  };
+
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+}
 </script>
 </body>
 </html>
