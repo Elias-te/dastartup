@@ -1,0 +1,1831 @@
+Index · HTML
+Copy
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAS — Data Analytics & Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0f;
+  --bg2: #0f1318;
+  --bg3: #141a21;
+  --surface: #1a2230;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.15);
+  --accent: #00e5a0;
+  --accent2: #0084ff;
+  --accent3: #ff5c35;
+  --text: #e8edf3;
+  --text-muted: #6b7a8d;
+  --text-dim: #3a4455;
+  --gold: #f5c842;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+ 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+ 
+/* Custom cursor */
+.cursor {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.2s;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(0,229,160,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.35s ease, width 0.3s, height 0.3s, border-color 0.3s;
+  transform: translate(-50%, -50%);
+}
+body:hover .cursor { opacity: 1; }
+ 
+/* Grid overlay */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,229,160,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,160,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+ 
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,12,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+ 
+.logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #000;
+}
+ 
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+ 
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 20px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: none;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+ 
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 40px 80px;
+  overflow: hidden;
+  z-index: 1;
+}
+ 
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+}
+.orb1 {
+  width: 600px; height: 600px;
+  background: var(--accent);
+  top: -200px; right: -100px;
+  animation: orb-float 8s ease-in-out infinite;
+}
+.orb2 {
+  width: 400px; height: 400px;
+  background: var(--accent2);
+  bottom: -100px; left: 10%;
+  animation: orb-float 11s ease-in-out infinite reverse;
+}
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+ 
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+ 
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fade-up 0.6s 0.2s forwards;
+}
+.hero-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+ 
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fade-up 0.7s 0.35s forwards;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--accent);
+  position: relative;
+}
+.hero-title .stroke {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+  color: transparent;
+}
+ 
+.hero-sub {
+  font-size: 17px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 48px;
+  font-weight: 300;
+  opacity: 0;
+  animation: fade-up 0.7s 0.5s forwards;
+}
+ 
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fade-up 0.7s 0.65s forwards;
+}
+ 
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--accent);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: all 0.25s;
+  cursor: none;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,229,160,0.25); }
+ 
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--border-hover);
+  transition: all 0.25s;
+  cursor: none;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+ 
+/* Stats bar */
+.stats-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 40px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 48px;
+  background: rgba(10,12,15,0.6);
+  backdrop-filter: blur(10px);
+  z-index: 1;
+  opacity: 0;
+  animation: fade-up 0.7s 0.8s forwards;
+}
+.stat { }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-num span { color: var(--accent); }
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+ 
+/* TICKER */
+.ticker {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  overflow: hidden;
+  background: var(--bg2);
+  position: relative;
+  z-index: 1;
+}
+.ticker-inner {
+  display: flex;
+  gap: 0;
+  animation: ticker 25s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  padding: 0 40px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.ticker-item::after {
+  content: '◆';
+  color: var(--accent);
+  font-size: 6px;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+ 
+/* SECTION STRUCTURE */
+section {
+  position: relative;
+  z-index: 1;
+}
+ 
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+}
+ 
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 60px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+}
+ 
+.section-sub {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 480px;
+}
+ 
+/* SERVICES */
+#services {
+  padding: 120px 40px;
+  background: var(--bg);
+}
+ 
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1px;
+  margin-top: 80px;
+  border: 1px solid var(--border);
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+ 
+.service-card {
+  background: var(--bg2);
+  padding: 48px 40px;
+  position: relative;
+  transition: background 0.3s;
+  cursor: none;
+}
+.service-card:hover { background: var(--bg3); }
+.service-card:hover .service-arrow { opacity: 1; transform: translate(4px, -4px); }
+ 
+.service-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 32px;
+}
+ 
+.service-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+ 
+.service-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+ 
+.service-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 28px;
+}
+ 
+.service-price {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+ 
+.service-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.service-features li {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.service-features li::before {
+  content: '→';
+  color: var(--accent);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+  font-size: 12px;
+  margin-top: 1px;
+}
+ 
+.service-arrow {
+  position: absolute;
+  top: 48px;
+  right: 40px;
+  font-size: 20px;
+  opacity: 0;
+  transition: all 0.3s;
+  color: var(--accent);
+}
+ 
+/* HOW IT WORKS */
+#process {
+  padding: 120px 40px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+ 
+.process-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 80px;
+}
+ 
+.process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+ 
+.process-step {
+  display: flex;
+  gap: 24px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  cursor: none;
+  transition: all 0.2s;
+}
+.process-step:first-child { padding-top: 0; }
+.process-step:last-child { border-bottom: none; }
+.process-step:hover .step-num { color: var(--accent); border-color: var(--accent); }
+ 
+.step-num {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-hover);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: all 0.25s;
+}
+ 
+.step-content { flex: 1; }
+ 
+.step-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+ 
+.step-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  font-weight: 300;
+}
+ 
+.step-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+}
+ 
+/* Dashboard mockup */
+.dashboard-mockup {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: sticky;
+  top: 100px;
+}
+ 
+.mockup-bar {
+  padding: 12px 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dot-red { width: 10px; height: 10px; border-radius: 50%; background: #ff5c5c; }
+.dot-yel { width: 10px; height: 10px; border-radius: 50%; background: #febc2e; }
+.dot-grn { width: 10px; height: 10px; border-radius: 50%; background: #28c840; }
+.mockup-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+ 
+.mockup-body { padding: 24px; }
+ 
+.mockup-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.metric-box {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.metric-val {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+}
+.metric-lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+.metric-chg {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  margin-top: 6px;
+}
+.up { color: var(--accent); }
+.down { color: var(--accent3); }
+ 
+/* Mini chart */
+.chart-area {
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.chart-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+}
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 80px;
+}
+.bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  transition: opacity 0.2s;
+}
+.bar:hover { opacity: 0.7; }
+ 
+.mockup-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.tag-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+ 
+/* SECTORS */
+#sectors {
+  padding: 120px 40px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+ 
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+}
+ 
+.sector-card {
+  padding: 40px 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg2);
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  transition: all 0.3s;
+}
+.sector-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sector-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+.sector-card:hover::before { opacity: 1; }
+ 
+.sector-card.agtech::before { background: linear-gradient(135deg, rgba(0,229,160,0.05), transparent); }
+.sector-card.fintech::before { background: linear-gradient(135deg, rgba(0,132,255,0.05), transparent); }
+.sector-card.retail::before { background: linear-gradient(135deg, rgba(255,92,53,0.05), transparent); }
+ 
+.sector-emoji { font-size: 32px; margin-bottom: 20px; }
+ 
+.sector-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+ 
+.sector-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+ 
+.sector-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+}
+ 
+/* PRICING */
+#pricing {
+  padding: 120px 40px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+ 
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 64px;
+  background: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+ 
+.price-card {
+  background: var(--bg2);
+  padding: 48px 36px;
+  position: relative;
+  cursor: none;
+  transition: background 0.3s;
+}
+.price-card:hover { background: var(--bg3); }
+.price-card.featured {
+  background: var(--bg3);
+  border-top: 2px solid var(--accent);
+}
+ 
+.price-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.price-tag.hot {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.price-tag.hot::after {
+  content: 'POPULAR';
+  background: rgba(0,229,160,0.12);
+  color: var(--accent);
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+ 
+.price-name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+ 
+.price-amount {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.price-amount sub {
+  font-size: 16px;
+  font-weight: 400;
+  vertical-align: baseline;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.price-amount sup {
+  font-size: 20px;
+  font-weight: 600;
+  vertical-align: top;
+  margin-top: 10px;
+  display: inline-block;
+  color: var(--text-muted);
+}
+ 
+.price-duration {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  letter-spacing: 0.05em;
+}
+ 
+.price-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 28px;
+}
+ 
+.price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.price-features li {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.price-features li::before {
+  content: '✓';
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+ 
+.price-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 13px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.25s;
+  cursor: none;
+}
+.price-btn.outline {
+  border: 1px solid var(--border-hover);
+  color: var(--text);
+}
+.price-btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+.price-btn.solid {
+  background: var(--accent);
+  color: #000;
+}
+.price-btn.solid:hover { opacity: 0.88; transform: translateY(-1px); }
+ 
+/* ABOUT */
+#about {
+  padding: 120px 40px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+ 
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  margin-top: 80px;
+}
+ 
+.founder-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+ 
+.founder-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 24px;
+}
+ 
+.founder-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+.founder-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+}
+.founder-bio {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 28px;
+}
+ 
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 5px 12px;
+  border: 1px solid var(--border-hover);
+  border-radius: 4px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+ 
+.about-text .section-sub { max-width: 100%; margin-bottom: 32px; }
+ 
+.credentials {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.credential {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.cred-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.cred-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.cred-desc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+ 
+/* CONTACT */
+#contact {
+  padding: 120px 40px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+ 
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 80px;
+}
+ 
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+ 
+.contact-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 24px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: none;
+  transition: all 0.2s;
+}
+.contact-item:hover { border-color: var(--border-hover); }
+.contact-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.contact-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.contact-val {
+  font-size: 14px;
+  color: var(--text);
+}
+ 
+/* Form */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+ 
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+ 
+.field { display: flex; flex-direction: column; gap: 8px; }
+ 
+.field label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+ 
+.field input,
+.field select,
+.field textarea {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  transition: border-color 0.2s;
+  outline: none;
+  resize: none;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--accent);
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(--text-dim); }
+.field select option { background: var(--bg3); }
+ 
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: none;
+  letter-spacing: 0.05em;
+  transition: all 0.25s;
+  align-self: flex-start;
+}
+.form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+ 
+/* SUCCESS MESSAGE */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 40px;
+  background: rgba(0,229,160,0.05);
+  border: 1px solid rgba(0,229,160,0.2);
+  border-radius: 10px;
+}
+.form-success h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.form-success p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+ 
+/* FOOTER */
+footer {
+  padding: 48px 40px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg);
+}
+ 
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+ 
+.footer-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.footer-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+ 
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+ 
+/* ANIMATIONS */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+ 
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+ 
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .stats-bar { gap: 24px; padding: 20px; flex-wrap: wrap; }
+  section { padding: 80px 20px; }
+  #services, #process, #sectors, #pricing, #about, #contact { padding: 80px 20px; }
+  .process-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 40px; }
+  .sectors-grid, .pricing-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 24px; text-align: center; }
+}
+</style>
+</head>
+<body>
+ 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-overlay"></div>
+ 
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">D</div>
+    DAS
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#sectors">Sectors</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Start a project →</a>
+</nav>
+ 
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">Nairobi, Kenya · Est. 2025</div>
+    <h1 class="hero-title">
+      Data that<br>
+      <em>drives</em> real<br>
+      <span class="stroke">decisions</span>
+    </h1>
+    <p class="hero-sub">
+      Business intelligence, predictive analytics, and market research built for Kenyan SMEs. We turn your raw data into revenue-generating insight — affordably.
+    </p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">
+        Our services
+        <span>↓</span>
+      </a>
+      <a href="#contact" class="btn-secondary">
+        Book a free audit →
+      </a>
+    </div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">7.4<span>M+</span></div>
+      <div class="stat-label">KENYAN SMES UNDERSERVED</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<span>×</span></div>
+      <div class="stat-label">AVG REVENUE UPLIFT</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>KES</span> 25K</div>
+      <div class="stat-label">ENTRY-LEVEL PRICING</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<span>wks</span></div>
+      <div class="stat-label">FIRST INSIGHT DELIVERED</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item">Data Health Audit</div>
+    <div class="ticker-item">Sales Forecasting</div>
+    <div class="ticker-item">Market Intelligence</div>
+    <div class="ticker-item">AgTech Analytics</div>
+    <div class="ticker-item">FinTech BI</div>
+    <div class="ticker-item">Predictive Models</div>
+    <div class="ticker-item">Custom Dashboards</div>
+    <div class="ticker-item">Retail Insights</div>
+    <div class="ticker-item">Data Health Audit</div>
+    <div class="ticker-item">Sales Forecasting</div>
+    <div class="ticker-item">Market Intelligence</div>
+    <div class="ticker-item">AgTech Analytics</div>
+    <div class="ticker-item">FinTech BI</div>
+    <div class="ticker-item">Predictive Models</div>
+    <div class="ticker-item">Custom Dashboards</div>
+    <div class="ticker-item">Retail Insights</div>
+  </div>
+</div>
+ 
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What we do</div>
+  <h2 class="section-title reveal">Three ways we<br>work with you</h2>
+  <p class="section-sub reveal">Structured service packages designed for Kenyan businesses at every stage of their data journey.</p>
+ 
+  <div class="services-grid reveal">
+ 
+    <div class="service-card" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <div class="service-num">01</div>
+      <div class="service-icon" style="background:rgba(0,229,160,0.1)">🔍</div>
+      <div class="service-title">Data Health Audit</div>
+      <div class="service-desc">A complete diagnostic of your current data infrastructure. We identify gaps, inefficiencies, and quick wins — delivered as a clear, actionable report.</div>
+      <div class="service-price">KES 25,000 – 40,000</div>
+      <ul class="service-features">
+        <li>Audit of all data sources & storage systems</li>
+        <li>Data quality & completeness scoring</li>
+        <li>3–5 prioritised recommendations</li>
+        <li>PDF report + 30-min strategy call</li>
+        <li>2-week turnaround</li>
+      </ul>
+      <div class="service-arrow">↗</div>
+    </div>
+ 
+    <div class="service-card" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <div class="service-num">02</div>
+      <div class="service-icon" style="background:rgba(0,132,255,0.1)">📊</div>
+      <div class="service-title">Sales Forecast Dashboard</div>
+      <div class="service-desc">An interactive, live dashboard powered by machine learning — showing your sales trajectory, seasonal trends, and demand signals so you can plan ahead with confidence.</div>
+      <div class="service-price">KES 70,000 – 120,000</div>
+      <ul class="service-features">
+        <li>Historical data ingestion & cleaning</li>
+        <li>ML forecasting model (ARIMA / XGBoost)</li>
+        <li>Interactive Streamlit or Power BI dashboard</li>
+        <li>Monthly model refresh (retainer option)</li>
+        <li>6–8 week delivery</li>
+      </ul>
+      <div class="service-arrow">↗</div>
+    </div>
+ 
+    <div class="service-card" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <div class="service-num">03</div>
+      <div class="service-icon" style="background:rgba(255,92,53,0.1)">🗺️</div>
+      <div class="service-title">Market Intelligence Report</div>
+      <div class="service-desc">A deep-dive into your competitive landscape, pricing benchmarks, and consumer behaviour patterns — sector-specific and built for the Kenyan market.</div>
+      <div class="service-price">KES 90,000 – 180,000</div>
+      <ul class="service-features">
+        <li>Competitor landscape mapping</li>
+        <li>Consumer survey design & analysis</li>
+        <li>Sector pricing & trend benchmarks</li>
+        <li>Executive summary + visual report</li>
+        <li>4-week turnaround</li>
+      </ul>
+      <div class="service-arrow">↗</div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label">How we work</div>
+  <h2 class="section-title reveal">From raw data<br>to real insight</h2>
+ 
+  <div class="process-layout">
+    <div class="process-steps reveal">
+ 
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">Discovery call</div>
+          <div class="step-desc">We spend 45 minutes understanding your business, your data landscape, and what decisions you're trying to make better.</div>
+          <div class="step-tag">FREE · NO COMMITMENT</div>
+        </div>
+      </div>
+ 
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Data collection & audit</div>
+          <div class="step-desc">We connect to your existing data sources — M-Pesa records, Excel sheets, POS systems, or APIs — and assess quality and structure.</div>
+          <div class="step-tag">WEEK 1–2</div>
+        </div>
+      </div>
+ 
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Analysis & modelling</div>
+          <div class="step-desc">Our Python-powered analytics pipeline cleans, transforms, and models your data — building forecasts, segments, or intelligence depending on your package.</div>
+          <div class="step-tag">WEEK 2–6</div>
+        </div>
+      </div>
+ 
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">Dashboard delivery</div>
+          <div class="step-desc">We deliver a live, interactive dashboard and a plain-English report — plus a walkthrough session so your team can use it independently.</div>
+          <div class="step-tag">FINAL WEEK</div>
+        </div>
+      </div>
+ 
+      <div class="process-step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-title">Ongoing support</div>
+          <div class="step-desc">Optional monthly retainer to refresh models, add new data sources, and build new views as your business evolves.</div>
+          <div class="step-tag">KES 15,000–40,000/MO</div>
+        </div>
+      </div>
+ 
+    </div>
+ 
+    <!-- Dashboard mockup -->
+    <div class="dashboard-mockup reveal">
+      <div class="mockup-bar">
+        <div class="dot-red"></div>
+        <div class="dot-yel"></div>
+        <div class="dot-grn"></div>
+        <div class="mockup-title">DAS · Sales Intelligence · Q4 2025</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-metrics">
+          <div class="metric-box">
+            <div class="metric-val" style="color:var(--accent)">4.2M</div>
+            <div class="metric-lbl">REVENUE (KES)</div>
+            <div class="metric-chg up">↑ 18.4% vs last qtr</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val">847</div>
+            <div class="metric-lbl">TRANSACTIONS</div>
+            <div class="metric-chg up">↑ 9.1% vs last qtr</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val">4,963</div>
+            <div class="metric-lbl">AVG ORDER (KES)</div>
+            <div class="metric-chg down">↓ 2.3%</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val" style="color:var(--accent2)">92%</div>
+            <div class="metric-lbl">FORECAST ACC.</div>
+            <div class="metric-chg up">↑ Model v2.1</div>
+          </div>
+        </div>
+ 
+        <div class="chart-area">
+          <div class="chart-label">MONTHLY REVENUE FORECAST VS ACTUAL</div>
+          <div class="chart-bars" id="chartBars"></div>
+        </div>
+ 
+        <div class="mockup-row">
+          <span class="tag-pill" style="background:rgba(0,229,160,0.1);color:var(--accent);border:1px solid rgba(0,229,160,0.2)">AgriInput peak: Nov</span>
+          <span class="tag-pill" style="background:rgba(0,132,255,0.1);color:var(--accent2);border:1px solid rgba(0,132,255,0.2)">Forecast confidence: High</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- SECTORS -->
+<section id="sectors">
+  <div class="section-label">Industries</div>
+  <h2 class="section-title reveal">Built for Kenya's<br>growth sectors</h2>
+  <p class="section-sub reveal">Deep expertise in three industries where data-driven decisions have the highest ROI.</p>
+ 
+  <div class="sectors-grid">
+ 
+    <div class="sector-card agtech reveal" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <div class="sector-emoji">🌾</div>
+      <div class="sector-title">AgTech</div>
+      <div class="sector-desc">From input suppliers to e-commerce platforms for farmers, we help AgTech companies predict demand, optimise logistics, and understand smallholder behaviour.</div>
+      <div class="sector-tags">
+        <span class="stag" style="color:var(--accent);border-color:rgba(0,229,160,0.2)">Demand forecasting</span>
+        <span class="stag" style="color:var(--accent);border-color:rgba(0,229,160,0.2)">Supply chain BI</span>
+        <span class="stag" style="color:var(--accent);border-color:rgba(0,229,160,0.2)">Farmer segmentation</span>
+        <span class="stag" style="color:var(--accent);border-color:rgba(0,229,160,0.2)">Weather data integration</span>
+      </div>
+    </div>
+ 
+    <div class="sector-card fintech reveal" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <div class="sector-emoji">💸</div>
+      <div class="sector-title">FinTech</div>
+      <div class="sector-desc">Credit scoring, transaction pattern analysis, churn prediction, and regulatory reporting for Kenya's fast-growing digital finance ecosystem.</div>
+      <div class="sector-tags">
+        <span class="stag" style="color:var(--accent2);border-color:rgba(0,132,255,0.2)">M-Pesa analytics</span>
+        <span class="stag" style="color:var(--accent2);border-color:rgba(0,132,255,0.2)">Credit risk models</span>
+        <span class="stag" style="color:var(--accent2);border-color:rgba(0,132,255,0.2)">Churn prediction</span>
+        <span class="stag" style="color:var(--accent2);border-color:rgba(0,132,255,0.2)">Compliance dashboards</span>
+      </div>
+    </div>
+ 
+    <div class="sector-card retail reveal" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <div class="sector-emoji">🛒</div>
+      <div class="sector-title">Retail & Distribution</div>
+      <div class="sector-desc">Inventory optimisation, sales velocity tracking, and consumer insights for retailers, distributors, and FMCG companies operating across Kenya's markets.</div>
+      <div class="sector-tags">
+        <span class="stag" style="color:var(--accent3);border-color:rgba(255,92,53,0.2)">Inventory BI</span>
+        <span class="stag" style="color:var(--accent3);border-color:rgba(255,92,53,0.2)">Sales velocity</span>
+        <span class="stag" style="color:var(--accent3);border-color:rgba(255,92,53,0.2)">Price elasticity</span>
+        <span class="stag" style="color:var(--accent3);border-color:rgba(255,92,53,0.2)">Market mapping</span>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title reveal">Transparent.<br>Affordable. Local.</h2>
+  <p class="section-sub reveal">Enterprise-grade analytics at SME-friendly prices. All packages include a discovery call and project proposal — no surprises.</p>
+ 
+  <div class="pricing-grid reveal">
+ 
+    <div class="price-card">
+      <div class="price-tag">Starter</div>
+      <div class="price-name">Data Audit</div>
+      <div class="price-amount"><sup>KES</sup> 25K<sub>–40K</sub></div>
+      <div class="price-duration">One-time · 2-week delivery</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Full data source audit</li>
+        <li>Data quality scoring report</li>
+        <li>3–5 recommendations</li>
+        <li>PDF + walkthrough call</li>
+        <li>Email support for 30 days</li>
+      </ul>
+      <a href="#contact" class="price-btn outline">Get started →</a>
+    </div>
+ 
+    <div class="price-card featured">
+      <div class="price-tag hot">Core</div>
+      <div class="price-name">Forecast Dashboard</div>
+      <div class="price-amount"><sup>KES</sup> 70K<sub>–120K</sub></div>
+      <div class="price-duration">Project + optional retainer</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Data ingestion & cleaning pipeline</li>
+        <li>ML forecasting model built</li>
+        <li>Interactive live dashboard</li>
+        <li>Team training session</li>
+        <li>1 month of model support</li>
+        <li>Monthly retainer: +KES 15K/mo</li>
+      </ul>
+      <a href="#contact" class="price-btn solid">Start this project →</a>
+    </div>
+ 
+    <div class="price-card">
+      <div class="price-tag">Premium</div>
+      <div class="price-name">Market Intelligence</div>
+      <div class="price-amount"><sup>KES</sup> 90K<sub>–180K</sub></div>
+      <div class="price-duration">4-week sector deep-dive</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Competitor landscape mapping</li>
+        <li>Consumer survey & analysis</li>
+        <li>Pricing & trend benchmarks</li>
+        <li>Executive visual report</li>
+        <li>Presentation to your team</li>
+        <li>Follow-up Q&A session</li>
+      </ul>
+      <a href="#contact" class="price-btn outline">Get started →</a>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">The founder</div>
+  <h2 class="section-title reveal">Built by someone<br>who gets Kenya</h2>
+ 
+  <div class="about-layout">
+    <div class="founder-card reveal">
+      <div class="founder-avatar">D</div>
+      <div class="founder-name">DAS Founder</div>
+      <div class="founder-title">DATA SCIENTIST · NAIROBI, KE</div>
+      <div class="founder-bio">
+        Computer Science student at Machakos University and ALX Africa Data Science programme. Previously built Agricool — an e-commerce platform connecting farmers to buyers — which taught me exactly where Kenyan SMEs hit data walls and what it takes to break through them.
+        <br><br>
+        DAS exists because enterprise BI tools are built for Silicon Valley, not Nairobi. I'm building what I wish existed for Kenyan businesses.
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">Web Dev</span>
+        <span class="skill-tag">Data Viz</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Streamlit</span>
+      </div>
+    </div>
+ 
+    <div class="about-text reveal">
+      <div class="section-label">Credentials</div>
+      <p class="section-sub">Built on a foundation of formal education, hands-on programs, and real-world product experience.</p>
+      <br>
+      <div class="credentials">
+        <div class="credential">
+          <div class="cred-icon" style="background:rgba(0,229,160,0.1)">🎓</div>
+          <div>
+            <div class="cred-name">BSc Computer Science</div>
+            <div class="cred-desc">MACHAKOS UNIVERSITY · IN PROGRESS</div>
+          </div>
+        </div>
+        <div class="credential">
+          <div class="cred-icon" style="background:rgba(0,132,255,0.1)">📡</div>
+          <div>
+            <div class="cred-name">Data Science Programme</div>
+            <div class="cred-desc">ALX AFRICA · SPECIALISATION TRACK</div>
+          </div>
+        </div>
+        <div class="credential">
+          <div class="cred-icon" style="background:rgba(245,200,66,0.1)">🌾</div>
+          <div>
+            <div class="cred-name">Agricool — AgTech Platform</div>
+            <div class="cred-desc">FOUNDER · E-COMMERCE FOR FARMERS</div>
+          </div>
+        </div>
+        <div class="credential">
+          <div class="cred-icon" style="background:rgba(255,92,53,0.1)">⚡</div>
+          <div>
+            <div class="cred-name">East African Tech Ecosystem</div>
+            <div class="cred-desc">ACTIVE IN NAIROBI STARTUP COMMUNITY</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get in touch</div>
+  <h2 class="section-title reveal">Ready to let your<br>data do the work?</h2>
+  <p class="section-sub reveal">Start with a free 45-minute discovery call. No pitch, no commitment — just a conversation about your data and what it could tell you.</p>
+ 
+  <div class="contact-layout">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-val">Nairobi, Kenya · Serving all regions</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-val">eliasmuhuh@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-val">+254 793765667</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏱</div>
+        <div>
+          <div class="contact-label">Response time</div>
+          <div class="contact-val">Within 24 hours · Mon–Sat</div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="reveal">
+      <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="field">
+            <label>Your name</label>
+            <input type="text" placeholder="Amara Osei" required>
+          </div>
+          <div class="field">
+            <label>Company / Organisation</label>
+            <input type="text" placeholder="Sunrise Distributors Ltd">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email address</label>
+          <input type="email" placeholder="amara@sunrise.co.ke" required>
+        </div>
+        <div class="field">
+          <label>Service interested in</label>
+          <select>
+            <option value="">Select a package...</option>
+            <option>Data Health Audit (KES 25–40K)</option>
+            <option>Sales Forecast Dashboard (KES 70–120K)</option>
+            <option>Market Intelligence Report (KES 90–180K)</option>
+            <option>Monthly Retainer / Ongoing support</option>
+            <option>Not sure — let's talk</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tell us about your data challenge</label>
+          <textarea rows="4" placeholder="Briefly describe your business and what you're hoping to understand better from your data..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">
+          Send message →
+        </button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>✓ Message received</h3>
+        <p>We'll be in touch within 24 hours to schedule your discovery call. Talk soon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
+<footer>
+  <a href="#home" class="footer-logo">
+    <div class="logo-mark">D</div>
+    DAS
+  </a>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 DAS · Data Analytics & Solutions</div>
+</footer>
+ 
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+ 
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+ 
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+ 
+document.querySelectorAll('a, button, .service-card, .sector-card, .price-card, .process-step, .contact-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width = '48px';
+    ring.style.height = '48px';
+    ring.style.borderColor = 'rgba(0,229,160,0.7)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '32px';
+    ring.style.height = '32px';
+    ring.style.borderColor = 'rgba(0,229,160,0.4)';
+  });
+});
+ 
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in-view'), i * 80);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+reveals.forEach(el => observer.observe(el));
+ 
+// Chart bars
+const chartData = [65, 72, 58, 80, 91, 75, 88, 95, 82, 100, 94, 78];
+const colors = ['rgba(0,229,160,0.3)','rgba(0,229,160,0.3)','rgba(0,229,160,0.3)',
+                 'rgba(0,229,160,0.4)','rgba(0,229,160,0.5)','rgba(0,229,160,0.4)',
+                 'rgba(0,229,160,0.5)','rgba(0,229,160,0.7)','rgba(0,229,160,0.5)',
+                 'var(--accent)','rgba(0,229,160,0.7)','rgba(0,229,160,0.4)'];
+const cb = document.getElementById('chartBars');
+chartData.forEach((v, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'bar';
+  bar.style.height = v + '%';
+  bar.style.background = colors[i];
+  cb.appendChild(bar);
+});
+ 
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+ 
+// Nav active states
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id');
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+  });
+});
+</script>
+</body>
+</html>

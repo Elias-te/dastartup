@@ -1,0 +1,28 @@
+async function handleSubmit(e) {
+  e.preventDefault();
+  
+  // Collect data from the form
+  const formData = {
+    name: e.target.elements[0].value,
+    company: e.target.elements[1].value,
+    email: e.target.elements[2].value,
+    service: e.target.elements[3].value,
+    challenge: e.target.elements[4].value
+  };
+
+  try {
+    // Send to your Python Backend
+    const response = await fetch('http://127.0.0.1:5000/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  } catch (error) {
+    alert("Check if your Python server is running!");
+  }
+}
