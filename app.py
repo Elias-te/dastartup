@@ -92,6 +92,23 @@ def delete_lead(lead_id):
         db.session.commit()
         return jsonify({"message": "Lead deleted successfully"}), 200
     return jsonify({"message": "Lead not found"}), 404
+# --- ROUTE TO SHOW THE LOGIN PAGE ---
+@app.route('/admin')
+def admin_page():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # This serves your admin login/dashboard HTML file
+    return send_from_directory(base_dir, 'admin.html')
+
+# --- ROUTE TO SHOW THE DASHBOARD (jdas.html) ---
+@app.route('/dashboard')
+def dashboard_page():
+    if not session.get('logged_in'):
+        # If not logged in, send them back to the login page
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        return send_from_directory(base_dir, 'admin.html')
+    
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    return send_from_directory(base_dir, 'jdas.html')
 
 # ... all your routes (home, contact, login, etc.) are above this ...
 
