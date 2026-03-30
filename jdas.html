@@ -1,31 +1,80 @@
-async function loadLeads() {
-    const leadsContainer = document.getElementById('leadsBody'); 
-    
-    try {
-        // MUST BE A RELATIVE PATH
-       const response = await fetch('/api/admin/leads', { credentials: 'include' });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DAS Admin Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #0a0c0f; color: white; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; background: #1a2230; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #333; text-align: left; }
+        th { background: #00e5a0; color: black; }
+        .error-msg { color: #ff5c35; font-weight: bold; padding: 10px; border: 1px solid #ff5c35; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DAS Leads Dashboard</h1>
+        <div id="statusMessage"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Service</th>
+                    <th>Challenge</th>
+                </tr>
+            </thead>
+            <tbody id="leadsBody">
+                </tbody>
+        </table>
+    </div>
 
-        if (response.ok) {
-            const leads = await response.json();
-            leadsContainer.innerHTML = ''; 
+    <script>
+        async function fetchLeads() {
+            const tableBody = document.getElementById('leadsBody');
+            const status = document.getElementById('statusMessage');
 
-            leads.forEach(lead => {
-                const row = `
-                    <tr>
-                        <td>${lead.name}</td>
-                        <td>${lead.company}</td>
-                        <td>${lead.email}</td>
-                        <td>${lead.service}</td>
-                        <td>${lead.challenge}</td>
-                    </tr>
-                `;
-                leadsContainer.innerHTML += row;
-            });
-        } else if (response.status === 401) {
-            // If the server says "Unauthorized", go back to login
-            window.location.href = '/admin';
+            try {
+                const response = await fetch('/api/admin/leads', { credentials: 'include' });
+                
+                if (response.status === 401) {
+                    window.location.href = '/admin'; // Not logged in
+                    return;
+                }
+
+                if (!response.ok) {
+                    status.innerHTML = `<p class="error-msg">Server Error: ${response.status}</p>`;
+                    return;
+                }
+
+                const leads = await response.json();
+                tableBody.innerHTML = ''; // Clear "Loading"
+
+                if (leads.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5">No leads in the database.</td></tr>';
+                    return;
+                }
+
+                leads.forEach(lead => {
+                    const row = `<tr>
+                        <td>${lead.name || '-'}</td>
+                        <td>${lead.company || '-'}</td>
+                        <td>${lead.email || '-'}</td>
+                        <td>${lead.service || '-'}</td>
+                        <td>${lead.challenge || '-'}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+
+            } catch (err) {
+                console.error(err);
+                status.innerHTML = `<p class="error-msg">Connection Failed. Check if the server is live.</p>`;
+            }
         }
-    } catch (error) {
-        console.error("Dashboard error:", error);
-    }
-}
+
+        document.addEventListener('DOMContentLoaded', fetchLeads);
+    </script>
+</body>
+</html>
