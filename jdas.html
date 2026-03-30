@@ -3,10 +3,7 @@ async function loadLeads() {
     
     try {
         // MUST BE A RELATIVE PATH
-        const response = await fetch('/api/admin/leads', {
-            method: 'GET',
-            credentials: 'include' // This is the secret sauce for the cloud
-        });
+       const response = await fetch('/api/admin/leads', { credentials: 'include' });
 
         if (response.ok) {
             const leads = await response.json();

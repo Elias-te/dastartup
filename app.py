@@ -12,7 +12,10 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 # 2. CONFIGURE THE APP
 CORS(app, supports_credentials=True) 
 app.secret_key = 'das_super_secret_key_2026' 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///das_leads.db'
+
+# This creates a reliable path for your database on Render
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'das_leads.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 3. INITIALIZE THE DATABASE
@@ -74,6 +77,7 @@ def get_leads():
     output = []
     for lead in leads:
         output.append({
+            "id": lead.id,
             "name": lead.name,
             "company": lead.company,
             "email": lead.email,
