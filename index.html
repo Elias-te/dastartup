@@ -40,31 +40,6 @@ body {
   overflow-x: hidden;
 }
  
-/* Custom cursor 
-.cursor {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s ease, opacity 0.2s;
-  transform: translate(-50%, -50%);
-}
-.cursor-ring {
-  position: fixed;
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(0,229,160,0.4);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.35s ease, width 0.3s, height 0.3s, border-color 0.3s;
-  transform: translate(-50%, -50%);
-}
-body:hover .cursor { opacity: 1; }*/
- 
 /* Grid overlay */
 .grid-overlay {
   position: fixed;
@@ -142,7 +117,6 @@ nav {
   color: #000;
   border: none;
   border-radius: 4px;
-  cursor: none;
   font-weight: 400;
   letter-spacing: 0.05em;
   text-decoration: none;
@@ -268,7 +242,6 @@ nav {
   text-decoration: none;
   letter-spacing: 0.03em;
   transition: all 0.25s;
-  cursor: none;
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,229,160,0.25); }
  
@@ -286,7 +259,6 @@ nav {
   letter-spacing: 0.03em;
   border: 1px solid var(--border-hover);
   transition: all 0.25s;
-  cursor: none;
 }
 .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
  
@@ -422,7 +394,6 @@ section {
   padding: 48px 40px;
   position: relative;
   transition: background 0.3s;
-  cursor: none;
 }
 .service-card:hover { background: var(--bg3); }
 .service-card:hover .service-arrow { opacity: 1; transform: translate(4px, -4px); }
@@ -528,7 +499,6 @@ section {
   padding: 32px 0;
   border-bottom: 1px solid var(--border);
   position: relative;
-  cursor: none;
   transition: all 0.2s;
 }
 .process-step:first-child { padding-top: 0; }
@@ -700,7 +670,6 @@ section {
   background: var(--bg2);
   position: relative;
   overflow: hidden;
-  cursor: none;
   transition: all 0.3s;
 }
 .sector-card::before {
@@ -771,7 +740,6 @@ section {
   background: var(--bg2);
   padding: 48px 36px;
   position: relative;
-  cursor: none;
   transition: background 0.3s;
 }
 .price-card:hover { background: var(--bg3); }
@@ -883,7 +851,6 @@ section {
   letter-spacing: 0.05em;
   text-decoration: none;
   transition: all 0.25s;
-  cursor: none;
 }
 .price-btn.outline {
   border: 1px solid var(--border-hover);
@@ -1045,7 +1012,6 @@ section {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 10px;
-  cursor: none;
   transition: all 0.2s;
 }
 .contact-item:hover { border-color: var(--border-hover); }
@@ -1124,7 +1090,6 @@ section {
   font-size: 13px;
   border: none;
   border-radius: 6px;
-  cursor: none;
   letter-spacing: 0.05em;
   transition: all 0.25s;
   align-self: flex-start;
@@ -1747,11 +1712,6 @@ footer {
 </footer>
  
 <script>
-// Cursor
-//const cursor = document.getElementById('cursor');
-//const ring = document.getElementById('cursorRing');
-//let mx = 0, my = 0, rx = 0, ry = 0;
-// Scroll reveal
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
