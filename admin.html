@@ -43,87 +43,90 @@
     </div>
 
     <script>
-        // LOGIN FUNCTION
-        async function handleLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+    // 1. LOGIN FUNCTION
+    async function handleLogin() {
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
 
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: user, password: pass })
-            });
-
-            if (response.ok) {
-                document.getElementById('login-section').style.display = 'none';
-                loadLeads(); // Now we call the load function!
-            } else {
-                alert("Invalid Credentials, Elias!");
-            }
-        }
-
-        // LOAD DATA FUNCTION
-        async function loadLeads() {
-            const response = await fetch('http://127.0.0.1:5000/api/admin/leads');
-            if (response.ok) {
-                const leads = await response.json();
-                const tbody = document.getElementById('table-body');
-                tbody.innerHTML = ''; // Clear old data
-                document.getElementById('admin-panel').style.display = 'block';
-
-               leads.forEach(lead => {
-    tbody.innerHTML += `
-        <tr>
-            <td>${lead.name}</td>
-            <td>${lead.company}</td>
-            <td>${lead.email}</td>
-            <td>${lead.service}</td>
-            <td>${lead.challenge}</td>
-            <td>
-                <button onclick="deleteLead(${lead.id})" style="background:#ff5c35; color:white; padding:5px 10px; border-radius:4px; font-size:11px;">
-                    Delete
-                </button>
-            </td>
-        </tr>`;
-  });
-            }
-        }
-       function exportToCSV() {
-    const table = document.getElementById('table-body');
-    const rows = Array.from(table.querySelectorAll('tr'));
-    
-    // Create the CSV Header
-    let csvContent = "Name,Company,Email,Service,Challenge\n";
-
-    // Loop through each row in your table and add it to the CSV
-    rows.forEach(row => {
-        const cols = Array.from(row.querySelectorAll('td')).map(td => `"${td.innerText}"`);
-        csvContent += cols.join(",") + "\n";
-    });
-
-    // Create a hidden "download" link and click it automatically
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute('download', 'das_leads_export.csv');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-} 
-async function deleteLead(id) {
-    if (confirm("Elias, are you sure you want to delete this lead?")) {
-        const response = await fetch(`http://127.0.0.1:5000/api/admin/leads/${id}`, {
-            method: 'DELETE'
+        // FIX: Removed 127.0.0.1 and added credentials
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass }),
+            credentials: 'include' 
         });
+
         if (response.ok) {
-            loadLeads(); // Refresh the table automatically
+            document.getElementById('login-section').style.display = 'none';
+            loadLeads(); 
         } else {
-            alert("Delete failed!");
+            alert("Invalid Credentials, Elias!");
         }
     }
-}
-    </script>
-</body>
-</html>
+
+    // 2. LOAD DATA FUNCTION
+    async function loadLeads() {
+        // FIX: Removed 127.0.0.1 and added credentials
+        const response = await fetch('/api/admin/leads', {
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const leads = await response.json();
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = ''; 
+            document.getElementById('admin-panel').style.display = 'block';
+
+            leads.forEach(lead => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${lead.name}</td>
+                        <td>${lead.company}</td>
+                        <td>${lead.email}</td>
+                        <td>${lead.service}</td>
+                        <td>${lead.challenge}</td>
+                        <td>
+                            <button onclick="deleteLead(${lead.id})" style="background:#ff5c35; color:white; padding:5px 10px; border-radius:4px; font-size:11px;">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+        }
+    }
+
+    // 3. EXPORT FUNCTION (Keep as is, it's local only)
+    function exportToCSV() {
+        const table = document.getElementById('table-body');
+        const rows = Array.from(table.querySelectorAll('tr'));
+        let csvContent = "Name,Company,Email,Service,Challenge\n";
+
+        rows.forEach(row => {
+            const cols = Array.from(row.querySelectorAll('td')).map(td => `"${td.innerText}"`);
+            csvContent += cols.join(",") + "\n";
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'das_leads_export.csv');
+        a.click();
+    } 
+
+    // 4. DELETE FUNCTION
+    async function deleteLead(id) {
+        if (confirm("Elias, are you sure you want to delete this lead?")) {
+            // FIX: Removed 127.0.0.1 and added credentials
+            const response = await fetch(`/api/admin/leads/${id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (response.ok) {
+                loadLeads(); 
+            } else {
+                alert("Delete failed!");
+            }
+        }
+    }
+</script>
