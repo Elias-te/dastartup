@@ -102,21 +102,38 @@ body {
   background-size: 60px 60px;
 }
  
-/* NAV */
+/* UPDATED NAV FOR MOBILE */
 nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  padding: 0 40px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(10,12,15,0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 20px; /* Reduced padding for mobile */
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* This keeps Logo left and Button right */
+    background: rgba(10,12,15,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+}
+
+/* Ensure the links (Services, Pricing, etc) don't break the layout on mobile */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hides middle links on mobile to save space */
+    }
+    
+    .logo {
+        font-size: 18px; /* Slightly smaller logo for mobile */
+    }
+
+    .nav-cta {
+        padding: 8px 12px;
+        font-size: 11px; /* Smaller button to fit the top bar */
+    }
+}
 }
  
 .logo {
